@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="configSchema"
+    targetNamespace="http://tempuri.org/configSchema.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/configSchema.xsd"
+    xmlns:mstns="http://tempuri.org/configSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:attributeGroup name="pluginAttr">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+    <xs:attribute name="path" type ="xs:anyURI"/>
+  </xs:attributeGroup>
+
+  <xs:complexType name="property">
+
+    <xs:attribute name="name" use="required" type="xs:string"/>
+    <xs:attribute name="value" use="required" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name ="property_group">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="property" type="property"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="plugin_config">
+    <xs:sequence minOccurs="0" maxOccurs="1">
+      <xs:element name="properties" type="property_group"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="pluginAttr"/>
+  </xs:complexType>
+
+  <xs:element name="config">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:choice>
+          <xs:element name="frontend" type="plugin_config" />
+          <xs:element name="backend" type="plugin_config" />
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
