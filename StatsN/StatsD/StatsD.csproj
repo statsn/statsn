@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{77BF14E8-6C68-419A-8709-E8BFE335C617}</ProjectGuid>
+    <ProjectGuid>{094B7CB8-F892-45B3-982B-98ED4351A611}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StatsN.Frontends</RootNamespace>
-    <AssemblyName>Frontends</AssemblyName>
+    <RootNamespace>StatsN.StatsD</RootNamespace>
+    <AssemblyName>StatsD</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -34,13 +34,16 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive.Core">
+    <Reference Include="System.Reactive.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Interfaces.2.2.2\lib\net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Linq">
+    <Reference Include="System.Reactive.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Linq.2.2.2\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
@@ -53,16 +56,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFrontend.cs" />
-    <Compile Include="IFrontendFactory.cs" />
+    <Compile Include="Backends\Console.cs" />
+    <Compile Include="Frontends\StatsD.cs" />
+    <Compile Include="Frontends\Console.cs" />
+    <Compile Include="Frontends\StatsDMessageParser.cs" />
+    <Compile Include="Frontends\Udp.cs" />
+    <Compile Include="Frontends\StatsDUdpFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Backends\Backends.csproj">
+      <Project>{0a10ca0a-72de-4a1e-a574-8cf8741cce46}</Project>
+      <Name>Backends</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{bbc8b204-eb66-49e1-854e-ce71f35acbbc}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Frontends\Frontends.csproj">
+      <Project>{77bf14e8-6c68-419a-8709-e8bfe335c617}</Project>
+      <Name>Frontends</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

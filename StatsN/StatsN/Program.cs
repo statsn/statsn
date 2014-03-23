@@ -14,6 +14,8 @@ namespace StatsN
            var config = new Configuration.Configuration(new Uri(entryUri, "config.xml"));
             
             var host = new Host(config);
+
+            System.Diagnostics.Debug.WriteLine("Initalization complete - blocking main thread");
             Task.WaitAll(Never());
         }
 

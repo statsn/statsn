@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StatsN.Frontends;
 
 namespace StatsN
 {
-    class FrontendFactory : IFrontendFactory
+    class DefaultFrontendFactory : IFrontendFactory
     {
         Type Type { get; set; }
-        public FrontendFactory(Type type)
+        public DefaultFrontendFactory(Type type)
         {
             Type = type;
         }

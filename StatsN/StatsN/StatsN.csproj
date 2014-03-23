@@ -57,10 +57,13 @@
   <ItemGroup>
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="FrontendFactory.cs" />
-    <Compile Include="FrontendLoader.cs" />
+    <Compile Include="Plugins\DefaultBackendFactory.cs" />
+    <Compile Include="Plugins\DefaultFrontendFactory.cs" />
+    <Compile Include="Plugins\BackendLoader.cs" />
+    <Compile Include="Plugins\FrontendLoader.cs" />
     <Compile Include="Extentions\Xml.cs" />
-    <Compile Include="PluginUnloadableException.cs" />
+    <Compile Include="Plugins\PluginLoader.cs" />
+    <Compile Include="Plugins\PluginUnloadableException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Host.cs" />
@@ -74,9 +77,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Backends\Backends.csproj">
+      <Project>{0a10ca0a-72de-4a1e-a574-8cf8741cce46}</Project>
+      <Name>Backends</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{bbc8b204-eb66-49e1-854e-ce71f35acbbc}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Frontends\Frontends.csproj">
       <Project>{77bf14e8-6c68-419a-8709-e8bfe335c617}</Project>
       <Name>Frontends</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StatsD\StatsD.csproj">
+      <Project>{094b7cb8-f892-45b3-982b-98ed4351a611}</Project>
+      <Name>StatsD</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

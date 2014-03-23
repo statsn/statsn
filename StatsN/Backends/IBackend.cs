@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StatsN.Core;
-namespace StatsN.Frontends
+
+namespace StatsN.Backends
 {
-    public interface IFrontend
+    public interface IBackend
     {
-        IObservable<DescreteEvent> DescreteEvents { get; }
-        IObservable<Measurement> Measures { get; }
+        IObservable<DescreteEvent> Descrete { set; }
+        IObservable<Measurement> Measures {set;}
         void Run();
     }
 }

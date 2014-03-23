@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StatsN
+namespace StatsN.Plugins
 {
     class PluginUnloadableException : Exception
     {

@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using StatsN.Core;
 
-namespace StatsN
+namespace StatsN.StatsD.Frontends
 {
     class StatsDMessageParser
     {
-        private IObserver<DescreteEvent> Descretes {get; set;}
+        private IObserver<DescreteEvent> Descretes { get; set; }
         private IObserver<Measurement> Measures { get; set; }
 
-        public StatsDMessageParser(IObserver<DescreteEvent> descretes, IObserver<Measurement> measures){
+        public StatsDMessageParser(IObserver<DescreteEvent> descretes, IObserver<Measurement> measures)
+        {
             Descretes = descretes;
             Measures = measures;
         }
@@ -47,12 +48,16 @@ namespace StatsN
 
         private void EmitMessage(string name, float metric, string type)
         {
+            DescreteEvent descrete;
             switch (type)
             {
                 case "c":
+                    descrete = new DescreteEvent(name, nspace: type, count: metric);
+                    Descretes.OnNext(descrete);
+                    break;
                 case "s":
-                    var destrete = new DescreteEvent(name, nspace: type, count: metric);
-                    Descretes.OnNext(destrete);
+                    descrete = new DescreteEvent(name, nspace: type, count: 1, entityTag: (int)metric);
+                    Descretes.OnNext(descrete);
                     break;
                 case "ms":
                 case "g":

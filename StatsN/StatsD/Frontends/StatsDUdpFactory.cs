@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace StatsN
+using StatsN.Frontends;
+
+namespace StatsN.StatsD.Frontends
 {
-    public class StatsDFactory : IFrontendFactory<StatsD>
+    public class StatsDUdpFactory : IFrontendFactory<Udp>
     {
         public IFrontend Create(IReadOnlyDictionary<string, string> config)
         {
@@ -16,7 +18,7 @@ namespace StatsN
             var address = config.ContainsKey("address") ? IPAddress.Parse(config["address"]) : IPAddress.Loopback;
 
             var ep = new IPEndPoint(address, port);
-            return new StatsD(ep);
+            return new Udp(ep);
         }
     }
 }
