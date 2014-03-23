@@ -1,0 +1,7 @@
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate stub for StatsN.StatsD: type is not visible to exported or assembly(Frontends.Fakes).
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate stub for StatsN.StatsDMessageParser: type is not visible to exported or assembly(Frontends.Fakes).
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate shim for StatsN.IFrontend: type is an interface.
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate shim for StatsN.IFrontendFactory: type is an interface.
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate shim for StatsN.IFrontendFactory`1: type is an interface.
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate shim for StatsN.StatsD: type is not visible to exported or assembly(Frontends.Fakes).
+C:\Users\Amerdrix\Documents\GitHub\statsn\StatsN\FrontendTests\Fakes\Frontends.fakes : warning : Cannot generate shim for StatsN.StatsDMessageParser: type is not visible to exported or assembly(Frontends.Fakes).

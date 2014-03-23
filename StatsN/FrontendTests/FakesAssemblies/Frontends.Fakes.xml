@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Frontends.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:StatsN.Fakes.ShimStatsDFactory">
+            <summary>Shim type of StatsN.StatsDFactory</summary>
+        </member>
+        <member name="M:StatsN.Fakes.ShimStatsDFactory.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:StatsN.Fakes.ShimStatsDFactory.#ctor(StatsN.StatsDFactory)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:StatsN.Fakes.ShimStatsDFactory.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:StatsN.Fakes.ShimStatsDFactory.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:StatsN.Fakes.ShimStatsDFactory.Bind(StatsN.IFrontendFactory)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:StatsN.Fakes.ShimStatsDFactory.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:StatsN.Fakes.ShimStatsDFactory.Constructor">
+            <summary>Sets the shim of StatsDFactory.StatsDFactory()</summary>
+        </member>
+        <member name="P:StatsN.Fakes.ShimStatsDFactory.CreateIReadOnlyDictionaryOfStringString">
+            <summary>Sets the shim of StatsDFactory.Create(IReadOnlyDictionary`2&lt;String,String&gt; config)</summary>
+        </member>
+        <member name="T:StatsN.Fakes.ShimStatsDFactory.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:StatsN.Fakes.ShimStatsDFactory.AllInstances.CreateIReadOnlyDictionaryOfStringString">
+            <summary>Sets the shim of StatsDFactory.Create(IReadOnlyDictionary`2&lt;String,String&gt; config)</summary>
+        </member>
+        <member name="T:StatsN.Fakes.StubIFrontend">
+            <summary>Stub type of StatsN.IFrontend</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubIFrontend.#ctor">
+            <summary>Initializes a new instance of type StubIFrontend</summary>
+        </member>
+        <member name="F:StatsN.Fakes.StubIFrontend.DescreteEventsGet">
+            <summary>Sets the stub of IFrontend.get_DescreteEvents()</summary>
+        </member>
+        <member name="F:StatsN.Fakes.StubIFrontend.MeasuresGet">
+            <summary>Sets the stub of IFrontend.get_Measures()</summary>
+        </member>
+        <member name="P:StatsN.Fakes.StubIFrontend.f::StatsN#IFrontend#DescreteEvents">
+            <summary>Sets the stub of IFrontend.get_DescreteEvents()</summary>
+        </member>
+        <member name="P:StatsN.Fakes.StubIFrontend.f::StatsN#IFrontend#Measures">
+            <summary>Sets the stub of IFrontend.get_Measures()</summary>
+        </member>
+        <member name="T:StatsN.Fakes.StubIFrontendFactory">
+            <summary>Stub type of StatsN.IFrontendFactory</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubIFrontendFactory.#ctor">
+            <summary>Initializes a new instance of type StubIFrontendFactory</summary>
+        </member>
+        <member name="F:StatsN.Fakes.StubIFrontendFactory.CreateIReadOnlyDictionaryOfStringString">
+            <summary>Sets the stub of IFrontendFactory.Create(IReadOnlyDictionary`2&lt;String,String&gt; config)</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubIFrontendFactory.f::StatsN#IFrontendFactory#Create(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>Sets the stub of IFrontendFactory.Create(IReadOnlyDictionary`2&lt;String,String&gt; config)</summary>
+        </member>
+        <member name="T:StatsN.Fakes.StubIFrontendFactory`1">
+            <summary>Stub type of StatsN.IFrontendFactory`1</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubIFrontendFactory`1.#ctor">
+            <summary>Initializes a new instance of type StubIFrontendFactory</summary>
+        </member>
+        <member name="F:StatsN.Fakes.StubIFrontendFactory`1.CreateIReadOnlyDictionaryOfStringString">
+            <summary>Sets the stub of IFrontendFactory.Create(IReadOnlyDictionary`2&lt;String,String&gt; config)</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubIFrontendFactory`1.f::StatsN#IFrontendFactory#Create(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>Sets the stub of IFrontendFactory.Create(IReadOnlyDictionary`2&lt;String,String&gt; config)</summary>
+        </member>
+        <member name="T:StatsN.Fakes.StubStatsDFactory">
+            <summary>Stub type of StatsN.StatsDFactory</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubStatsDFactory.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:StatsN.Fakes.StubStatsDFactory.InitializeStub">
+            <summary>Initializes a new instance of type StubStatsDFactory</summary>
+        </member>
+        <member name="P:StatsN.Fakes.StubStatsDFactory.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:StatsN.Fakes.StubStatsDFactory.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:StatsN.Fakes.StubStatsDFactory.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+    </members>
+</doc>

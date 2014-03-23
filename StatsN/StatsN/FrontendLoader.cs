@@ -39,7 +39,7 @@ namespace StatsN
             var factoryType = FindPluginFactoryType(config, frontendType);
 
             IFrontendFactory factory;
-            if (factoryType != null)
+            if (factoryType == null)
                 factory = new FrontendFactory(frontendType);
             else
                 factory = (IFrontendFactory)Activator.CreateInstance(factoryType);

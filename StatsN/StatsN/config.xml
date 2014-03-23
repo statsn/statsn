@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <config xmlns="http://tempuri.org/configSchema.xsd">
-  <frontend name="statsd" enabled="true"/>
-  <frontend name="statsdhttp" enabled="true"/>
+  <frontend name="statsd" enabled="true">
+    <properties>
+      <property name="port" value="9871"/>
+    </properties>
+  </frontend>
+  
   <backend name="graphite" />
 </config>
