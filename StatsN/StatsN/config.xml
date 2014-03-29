@@ -7,6 +7,5 @@
   </frontend>
 
   <frontend name="statsd.frontends.console"></frontend>
-  <frontend name="statsd.frontends.console"></frontend>
   <backend name="statsd.backends.console" />
 </config>
