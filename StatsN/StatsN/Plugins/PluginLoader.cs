@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reactive.Subjects;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Reflection;
 using StatsN.Configuration;
+
 
 namespace StatsN.Plugins
 {
     abstract class PluginLoader<TPluginInterface, TFactoryInterface>
     {
         public IObservable<TPluginInterface> Plugins { get; private set; }
-        private ISubject<TPluginInterface> PluginsSubject { get; set; }
+        private IObserver<TPluginInterface> PluginsObservable { get; set; }
 
         private Type PluginInterface { get { return typeof(TPluginInterface); } }
         protected abstract Type GenericFactoryInterface { get; }
@@ -21,7 +23,16 @@ namespace StatsN.Plugins
 
         protected PluginLoader()
         {
-            Plugins = PluginsSubject = new ReplaySubject<TPluginInterface>();
+            var pluginStream = Observable.Create<TPluginInterface>(observer =>
+                {
+                    PluginsObservable = observer;
+                    return Disposable.Create(() => { });
+
+                })
+                .Replay();
+
+            pluginStream.Connect();
+            Plugins = pluginStream;
         }
 
         public PluginLoader<TPluginInterface, TFactoryInterface> Load(IEnumerable<PluginConfig> plugins)
@@ -31,7 +42,7 @@ namespace StatsN.Plugins
                 try
                 {
                     var factory = CreateFactory(plugin);
-                    PluginsSubject.OnNext(CreatePlugin(factory, plugin));
+                    PluginsObservable.OnNext(CreatePlugin(factory, plugin));
                 }
                 catch (PluginUnloadableException ex)
                 {

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace StatsN.Core
 {
-    public struct DescreteEvent
+    public class DescreteEvent : IMetric
     {
-        public readonly string Name;
-        public readonly string Namespace;
+        public string Name { get; private set;}
+        public string Namespace { get; private set; }
+        public Object EntityTag { get; private set; }
+        public Object ActorTag { get; private set; }
+        
         public readonly float Count;
-        public readonly Object EntityTag;
-        public readonly Object ActorTag;
         
         public DescreteEvent(
             string name, 

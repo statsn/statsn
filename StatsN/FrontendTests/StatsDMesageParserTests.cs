@@ -5,26 +5,25 @@ using Moq;
 using StatsN.Core;
 using StatsN;
 using StatsN.StatsD.Frontends;
+
 namespace FrontendTests
 {
     [TestClass]
     public class StatsDMesageParserTests
     {
-        IList<DescreteEvent> Descretes;
-        IList<Measurement> Measures;
+        IList<DescreteEvent> Metrics;
 
         StatsDMessageParser Parser;
+
 
         [TestInitialize]
         public void Before()
         {
-            Descretes = new List<DescreteEvent>();
-            Measures = new List<Measurement>();
+            Metrics = new List<IMetric>();
 
-            var descreteObserver = MockObserverToCollection(Descretes);
-            var measureObserver = MockObserverToCollection(Measures);
+            var observer = MockObserverToCollection(Metrics);
 
-            Parser = new StatsDMessageParser(descreteObserver, measureObserver);
+            Parser = new StatsDMessageParser(observer);
         }
 
         private IObserver<T> MockObserverToCollection<T> (ICollection<T> collection){
@@ -44,8 +43,8 @@ namespace FrontendTests
 
             Assert.AreEqual(Measures.Count, 0);
 
-            Assert.AreEqual(Descretes.Count, 1);
-            var descrete = Descretes[0];
+            Assert.AreEqual(Metrics.Count, 1);
+            var descrete = Metrics[0];
             Assert.AreEqual(descrete.Name, "foo.bar");
             Assert.AreEqual(descrete.Namespace, "c");
             Assert.AreEqual(descrete.Count, 1, 1e-10);
@@ -59,8 +58,8 @@ namespace FrontendTests
 
             Assert.AreEqual(Measures.Count, 0);
 
-            Assert.AreEqual(Descretes.Count, 1);
-            var descrete = Descretes[0];
+            Assert.AreEqual(Metrics.Count, 1);
+            var descrete = Metrics[0];
             Assert.AreEqual(descrete.Name, "foo.bar");
             Assert.AreEqual(descrete.Namespace, "c");
             Assert.AreEqual(descrete.Count, 10, 1e-10);
@@ -74,8 +73,8 @@ namespace FrontendTests
 
             Assert.AreEqual(Measures.Count, 0);
 
-            Assert.AreEqual(Descretes.Count, 1);
-            var descrete = Descretes[0];
+            Assert.AreEqual(Metrics.Count, 1);
+            var descrete = Metrics[0];
             Assert.AreEqual(descrete.Name, "foo.bar");
             Assert.AreEqual(descrete.Namespace, "s");
             Assert.AreEqual(descrete.Count, 1, 1e-10);
@@ -89,7 +88,7 @@ namespace FrontendTests
 
             Parser.Parse(message);
 
-            Assert.AreEqual(Descretes.Count, 0);
+            Assert.AreEqual(Metrics.Count, 0);
             Assert.AreEqual(Measures.Count, 1);
 
             var measure = Measures[0];
@@ -105,7 +104,7 @@ namespace FrontendTests
 
             Parser.Parse(message);
 
-            Assert.AreEqual(Descretes.Count, 0);
+            Assert.AreEqual(Metrics.Count, 0);
             Assert.AreEqual(Measures.Count, 1);
 
             var measure = Measures[0];
@@ -121,7 +120,7 @@ namespace FrontendTests
 
             Parser.Parse(message);
 
-            Assert.AreEqual(Descretes.Count, 1);
+            Assert.AreEqual(Metrics.Count, 1);
             Assert.AreEqual(Measures.Count, 2);
         }
     }

@@ -9,10 +9,12 @@ namespace StatsN.StatsD.Frontends
 {
     class Console : StatsD
     {
+        private bool Running = true;
+
         protected override void Listen(StatsDMessageParser parser)
         {
             System.Console.WriteLine("StatsD CLI");
-            while (true)
+            while (Running)
             {
                 try
                 {
@@ -25,6 +27,11 @@ namespace StatsN.StatsD.Frontends
 
                 }
             }
+        }
+
+        public override void Terminate()
+        {
+            Running = false;
         }
     }
 }

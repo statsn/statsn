@@ -16,11 +16,10 @@ namespace StatsN
             Type = type;
         }
 
-        public IBackend Create(IReadOnlyDictionary<string, string> config, IObservable<DescreteEvent> descrete, IObservable<Measurement> measures)
+        public IBackend Create(IReadOnlyDictionary<string, string> config, IObservable<IMetric> descrete)
         {
             var backend = (IBackend)Activator.CreateInstance(Type);
-            backend.Descrete = descrete;
-            backend.Measures = measures;
+            backend.Events = descrete;
             return backend;
         }
     }

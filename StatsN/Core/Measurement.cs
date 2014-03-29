@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace StatsN.Core
 {
-    public struct Measurement
+    public class Measurement : IMetric
     {
-        public readonly string Name;
-        public readonly string Namespace;
-        public readonly float Value;
-        public readonly Object EntityTag;
-        public readonly Object ActorTag;
+        public string Name { get; private set; }
+        public string Namespace { get; private set; }
+        public Object EntityTag { get; private set; }
+        public Object ActorTag { get; private set; }
 
+        public readonly float Value;
+        
         public Measurement(
             string name,
             string nspace = null,

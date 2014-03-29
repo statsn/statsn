@@ -9,7 +9,7 @@ namespace StatsN.Backends
 {
     public interface IBackendFactory
     {
-        IBackend Create(IReadOnlyDictionary<string, string> config, IObservable<DescreteEvent> descrete, IObservable<Measurement> measures);
+        IBackend Create(IReadOnlyDictionary<string, string> config, IObservable<IMetric> descrete);
     }
 
     public interface IBackendFactory<out TBackend> : IBackendFactory

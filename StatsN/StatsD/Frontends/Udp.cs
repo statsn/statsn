@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using StatsN.Core;
-using System.Reactive.Subjects;
+using System.Reactive.Linq;
 
 
 namespace StatsN.StatsD.Frontends
@@ -21,14 +21,23 @@ namespace StatsN.StatsD.Frontends
             System.Diagnostics.Debug.WriteLine("UdpListner created on {0}", ep);
         }
 
+        public override void Terminate()
+        {
+            Client.Close();
+        }
+
         protected override async void Listen(StatsDMessageParser parser)
         {
+            
             try
             {
                 while (true)    
                 {
                     var result = await Client.ReceiveAsync();
-                    parser.Parse(Encoding.UTF8.GetString(result.Buffer));
+
+                    var str = Encoding.UTF8.GetString(result.Buffer);
+                    System.Console.WriteLine(str);
+                    parser.Parse(str);
                 }
             }
             catch (ObjectDisposedException)

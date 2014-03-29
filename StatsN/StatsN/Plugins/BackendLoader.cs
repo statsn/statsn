@@ -11,19 +11,16 @@ namespace StatsN.Plugins
 {
     class BackendLoader : PluginLoader<IBackend, IBackendFactory>
     {
-        private IObservable<DescreteEvent> Descrete;
-        private IObservable<Measurement> Measures;
+        private IObservable<IMetric> Descrete;
 
-        public BackendLoader(IObservable<DescreteEvent> descrete, 
-            IObservable<Measurement> measures)  {
+        public BackendLoader(IObservable<IMetric> descrete)  {
                 Descrete = descrete;
-                Measures = measures;
         }
 
         protected override IBackend CreatePlugin(IBackendFactory factory, Configuration.PluginConfig config)
         {
             System.Diagnostics.Debug.WriteLine("Creating Backend plugin using {0}", factory.GetType());
-            return factory.Create(config.Properties, Descrete, Measures);
+            return factory.Create(config.Properties, Descrete);
         }
 
         protected override Type GenericFactoryInterface

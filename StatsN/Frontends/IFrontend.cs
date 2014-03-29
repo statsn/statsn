@@ -8,8 +8,8 @@ namespace StatsN.Frontends
 {
     public interface IFrontend
     {
-        IObservable<DescreteEvent> DescreteEvents { get; }
-        IObservable<Measurement> Measures { get; }
+        IObservable<IMetric> Events { get; }
         void Run();
+        void Terminate();
     }
 }

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StatsN.Core;
+using System.Reactive.Linq;
 
-namespace StatsN.Backends
+namespace StatsN.StatsD.Backends.Aggregations
 {
-    public interface IBackend
+    abstract class Aggregator<TResult, TInput>
     {
-        IObservable<IMetric> Events { set; }
         
-        void Run();
+
+
     }
 }

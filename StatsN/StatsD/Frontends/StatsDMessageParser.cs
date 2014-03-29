@@ -9,22 +9,20 @@ namespace StatsN.StatsD.Frontends
 {
     class StatsDMessageParser
     {
-        private IObserver<DescreteEvent> Descretes { get; set; }
-        private IObserver<Measurement> Measures { get; set; }
+        private IObserver<IMetric> Events { get; set; }
 
-        public StatsDMessageParser(IObserver<DescreteEvent> descretes, IObserver<Measurement> measures)
+        public StatsDMessageParser(IObserver<IMetric> events)
         {
-            Descretes = descretes;
-            Measures = measures;
+            Events = events;
         }
 
         public void Parse(string message)
         {
             var components = message.Split('\n');
 
-            foreach (var msg in components)
+            foreach (var msg in components.Where(str => !String.IsNullOrWhiteSpace(str)))
             {
-                DisectMessage(msg);
+                DisectMessage(msg.Trim());
             }
         }
 
@@ -48,25 +46,24 @@ namespace StatsN.StatsD.Frontends
 
         private void EmitMessage(string name, float metric, string type)
         {
-            DescreteEvent descrete;
+            IMetric evnt;
             switch (type)
             {
                 case "c":
-                    descrete = new DescreteEvent(name, nspace: type, count: metric);
-                    Descretes.OnNext(descrete);
+                    evnt = new DescreteEvent(name, nspace: type, count: metric);
                     break;
                 case "s":
-                    descrete = new DescreteEvent(name, nspace: type, count: 1, entityTag: (int)metric);
-                    Descretes.OnNext(descrete);
+                    evnt = new DescreteEvent(name, nspace: type, count: 1, entityTag: (int)metric);
                     break;
                 case "ms":
                 case "g":
-                    var measure = new Measurement(name, nspace: type, value: metric);
-                    Measures.OnNext(measure);
+                    evnt = new Measurement(name, nspace: type, value: metric);
                     break;
                 default:
                     throw new Exception(String.Format("Unknown message type {0}", type));
             }
+
+            Events.OnNext(evnt);
         }
     }
 }

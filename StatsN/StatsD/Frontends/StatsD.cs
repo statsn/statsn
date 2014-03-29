@@ -13,17 +13,15 @@ namespace StatsN.StatsD.Frontends
 {
     abstract class StatsD : IFrontend
     {
-        public IObservable<DescreteEvent> DescreteEvents { get; private set; }
-        public IObservable<Measurement> Measures { get; private set; }
+        public IObservable<IMetric> Events { get; private set; }
         private StatsDMessageParser Parser;
 
         public StatsD()
         {
-            var descretes = new Subject<DescreteEvent>();
-            DescreteEvents = descretes;
-            var meausures = new Subject<Measurement>();
-            Measures = meausures;
-            Parser = new StatsDMessageParser(descretes, meausures);
+            var events = new Subject<IMetric>();
+            Events = events;
+            
+            Parser = new StatsDMessageParser(events);
         }
 
         public void Run()
@@ -31,6 +29,7 @@ namespace StatsN.StatsD.Frontends
             Listen(Parser);
         }
 
+        public abstract void Terminate();
         protected abstract void Listen(StatsDMessageParser parser);
     }
 }

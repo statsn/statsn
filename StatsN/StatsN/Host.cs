@@ -15,10 +15,10 @@ namespace StatsN
             System.Diagnostics.Debug.WriteLine("Loading starts");
             var frontendLoader = new Plugins.FrontendLoader().Load(config.Frontends);
             
-            var descrete = Observable.Merge<DescreteEvent>(frontendLoader.Plugins.Select(fe => fe.DescreteEvents));
-            var measure = Observable.Merge<Measurement>(frontendLoader.Plugins.Select(fe => fe.Measures));
+            var descrete = Observable.Merge<IMetric>(frontendLoader.Plugins.Select(fe => fe.Events));
+            
 
-            var backendLoader = new Plugins.BackendLoader(descrete, measure).Load(config.Backends);
+            var backendLoader = new Plugins.BackendLoader(descrete).Load(config.Backends);
             frontendLoader.Plugins.Subscribe(_ => Task.Factory.StartNew(_.Run));
             backendLoader.Plugins.Subscribe(_ => _.Run());
 
