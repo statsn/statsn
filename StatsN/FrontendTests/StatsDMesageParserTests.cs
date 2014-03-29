@@ -19,7 +19,7 @@ namespace FrontendTests
         [TestInitialize]
         public void Before()
         {
-            Metrics = new List<IMetric>();
+            Metrics = new List<Metric>();
 
             var observer = MockObserverToCollection(Metrics);
 

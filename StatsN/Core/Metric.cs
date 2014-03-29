@@ -6,26 +6,29 @@ using System.Threading.Tasks;
 
 namespace StatsN.Core
 {
-    public class DescreteEvent : IMetric
+    public struct Metric
     {
-        public string Name { get; private set;}
-        public string Namespace { get; private set; }
-        public Object EntityTag { get; private set; }
-        public Object ActorTag { get; private set; }
+        public readonly string Name;
+        public readonly string Namespace;
+        public readonly Object EntityTag;
+        public readonly Object ActorTag;
+        public readonly Double Value;
         
         public readonly float Count;
         
-        public DescreteEvent(
+        public Metric(
             string name, 
             string nspace = null,
-            float count = 1, 
+            float count = 1,
+            Double value = Double.NaN,
             object entityTag = null, 
             object actorTag = null
-)
+        )
         {
             Name = name;
             Namespace = nspace;
             Count = count;
+            Value = value;
             EntityTag = entityTag;
             ActorTag = actorTag;
         }

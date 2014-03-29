@@ -53,10 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DescreteEvent.cs" />
-    <Compile Include="IMetric.cs" />
-    <Compile Include="Measurement.cs" />
-    <Compile Include="ObservableExtentions.cs" />
+    <Compile Include="MetaMetric.cs" />
+    <Compile Include="Metric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

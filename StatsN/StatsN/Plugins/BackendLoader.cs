@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 using StatsN.Core;
 using StatsN.Backends;
 
-
 namespace StatsN.Plugins
 {
     class BackendLoader : PluginLoader<IBackend, IBackendFactory>
     {
-        private IObservable<IMetric> Descrete;
-
-        public BackendLoader(IObservable<IMetric> descrete)  {
-                Descrete = descrete;
-        }
+        private IObservable<Metric> Descrete;
 
         protected override IBackend CreatePlugin(IBackendFactory factory, Configuration.PluginConfig config)
         {
             System.Diagnostics.Debug.WriteLine("Creating Backend plugin using {0}", factory.GetType());
-            return factory.Create(config.Properties, Descrete);
+            return factory.Create(config.Properties);
         }
 
         protected override Type GenericFactoryInterface

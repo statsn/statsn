@@ -60,6 +60,7 @@
     <Compile Include="Backends\Aggregations\MeasurementAggregator.cs" />
     <Compile Include="Backends\Console.cs" />
     <Compile Include="Backends\Aggregations\MeasurementMetrics.cs" />
+    <Compile Include="Backends\StatsDBackend.cs" />
     <Compile Include="Frontends\StatsD.cs" />
     <Compile Include="Frontends\Console.cs" />
     <Compile Include="Frontends\StatsDMessageParser.cs" />

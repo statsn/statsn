@@ -13,12 +13,12 @@ namespace StatsN.StatsD.Frontends
 {
     abstract class StatsD : IFrontend
     {
-        public IObservable<IMetric> Events { get; private set; }
+        public IObservable<Metric> Events { get; private set; }
         private StatsDMessageParser Parser;
 
         public StatsD()
         {
-            var events = new Subject<IMetric>();
+            var events = new Subject<Metric>();
             Events = events;
             
             Parser = new StatsDMessageParser(events);

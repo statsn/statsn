@@ -16,10 +16,9 @@ namespace StatsN
             Type = type;
         }
 
-        public IBackend Create(IReadOnlyDictionary<string, string> config, IObservable<IMetric> descrete)
+        public IBackend Create(IReadOnlyDictionary<string, string> config)
         {
             var backend = (IBackend)Activator.CreateInstance(Type);
-            backend.Events = descrete;
             return backend;
         }
     }

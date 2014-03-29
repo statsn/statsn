@@ -9,9 +9,9 @@ namespace StatsN.StatsD.Frontends
 {
     class StatsDMessageParser
     {
-        private IObserver<IMetric> Events { get; set; }
+        private IObserver<Metric> Events { get; set; }
 
-        public StatsDMessageParser(IObserver<IMetric> events)
+        public StatsDMessageParser(IObserver<Metric> events)
         {
             Events = events;
         }
@@ -46,18 +46,18 @@ namespace StatsN.StatsD.Frontends
 
         private void EmitMessage(string name, float metric, string type)
         {
-            IMetric evnt;
+            Metric evnt;
             switch (type)
             {
                 case "c":
-                    evnt = new DescreteEvent(name, nspace: type, count: metric);
+                    evnt = new Metric(name, nspace: type, count: metric);
                     break;
                 case "s":
-                    evnt = new DescreteEvent(name, nspace: type, count: 1, entityTag: (int)metric);
+                    evnt = new Metric(name, nspace: type, count: 1, entityTag: (int)metric);
                     break;
                 case "ms":
                 case "g":
-                    evnt = new Measurement(name, nspace: type, value: metric);
+                    evnt = new Metric(name, nspace: type, value: metric);
                     break;
                 default:
                     throw new Exception(String.Format("Unknown message type {0}", type));

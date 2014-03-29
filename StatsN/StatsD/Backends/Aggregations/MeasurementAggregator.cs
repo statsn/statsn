@@ -11,7 +11,7 @@ namespace StatsN.StatsD.Backends.Aggregations
 {
     class MeasurementAggregator
     {
-        public IObservable<MeasurementMetrics> Aggregate(IObservable<Measurement> source)
+        public IObservable<MeasurementMetrics> Aggregate(IObservable<Metric> source)
         {
             return Observable.Create<MeasurementMetrics>(sink =>
             {
@@ -20,7 +20,7 @@ namespace StatsN.StatsD.Backends.Aggregations
             });
         }
 
-        class Observer : IObserver<Measurement>
+        class Observer : IObserver<Metric>
         {
             private double Upper = Double.NegativeInfinity, Lower = Double.PositiveInfinity, Sum, Mean, M2;
             private long Count;
@@ -96,18 +96,19 @@ namespace StatsN.StatsD.Backends.Aggregations
                 throw new NotImplementedException();
             }
 
-            public void OnNext(Measurement value)
+            public void OnNext(Metric metric)
             {
-                var delta = value.Value - Mean;
+                var value = metric.Value;
+                var delta = value - Mean;
                 Count += 1;
                 Mean += delta / Count;
-                M2 += delta * (value.Value - Mean);
+                M2 += delta * (value - Mean);
 
-                Sum += value.Value;
-                Upper = Math.Max(Upper, value.Value);
-                Lower = Math.Min(Lower, value.Value);
+                Sum += value;
+                Upper = Math.Max(Upper, value);
+                Lower = Math.Min(Lower, value);
 
-                Items.Add(value.Value);
+                Items.Add(value);
             }
         }
     }

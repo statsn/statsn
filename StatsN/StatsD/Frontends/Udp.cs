@@ -28,16 +28,13 @@ namespace StatsN.StatsD.Frontends
 
         protected override async void Listen(StatsDMessageParser parser)
         {
-            
             try
             {
                 while (true)    
                 {
                     var result = await Client.ReceiveAsync();
-
-                    var str = Encoding.UTF8.GetString(result.Buffer);
-                    System.Console.WriteLine(str);
-                    parser.Parse(str);
+                    
+                    parser.Parse(Encoding.UTF8.GetString(result.Buffer));
                 }
             }
             catch (ObjectDisposedException)

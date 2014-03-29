@@ -9,8 +9,6 @@ namespace StatsN.Backends
 {
     public interface IBackend
     {
-        IObservable<IMetric> Events { set; }
-        
-        void Run();
+        void Run(IObservable<Metric> metrics, IObservable<MetaMetric> meta);
     }
 }

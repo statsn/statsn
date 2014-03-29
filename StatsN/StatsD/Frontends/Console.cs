@@ -24,7 +24,6 @@ namespace StatsN.StatsD.Frontends
                 catch (IndexOutOfRangeException)
                 {
                     
-
                 }
             }
         }
