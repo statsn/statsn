@@ -9,12 +9,7 @@ using System.Reactive.Disposables;
 
 namespace StatsN.StatsD.Backends
 {
-    interface IMetricGroup : IGroupedObservable<string, Metric>
-    {
-
-    }
-
-    class EmptyMetricGroup : IMetricGroup
+    class EmptyMetricGroup : IGroupedObservable<string, Metric>
     {
 
         public EmptyMetricGroup(string key)

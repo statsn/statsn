@@ -68,6 +68,7 @@
     <Compile Include="Frontends\Udp.cs" />
     <Compile Include="Frontends\StatsDUdpFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tags.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Backends\Backends.csproj">

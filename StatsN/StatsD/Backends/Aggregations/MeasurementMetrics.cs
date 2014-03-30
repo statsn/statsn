@@ -45,7 +45,6 @@ namespace StatsN.StatsD.Backends.Aggregations
             Mean = mean;
             Median = median;
 
-
             Sum = sum;
             Std = std;
         }

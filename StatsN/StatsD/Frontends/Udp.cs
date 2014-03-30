@@ -7,11 +7,12 @@ using System.Net;
 using System.Net.Sockets;
 using StatsN.Core;
 using System.Reactive.Linq;
+using System.Reactive.Disposables;
 
 
 namespace StatsN.StatsD.Frontends
 {
-    class Udp : StatsD
+    class Udp : StatsDFrontend
     {
         private UdpClient Client;
 
@@ -21,28 +22,30 @@ namespace StatsN.StatsD.Frontends
             System.Diagnostics.Debug.WriteLine("UdpListner created on {0}", ep);
         }
 
-        public override void Terminate()
+        protected override IObservable<string> Listen()
         {
-            Client.Close();
+            var inputs = Observable.Create<string>(observer =>
+            {
+                EmitString(observer);
+
+                return Disposable.Create(Client.Close);
+            });
+
+            return inputs;
         }
 
-        protected override async void Listen(StatsDMessageParser parser)
+        private void EmitString(IObserver<String> observer)
         {
-            try
+            var read = Client.ReceiveAsync();
+            read.ContinueWith(result =>
             {
-                while (true)    
-                {
-                    var result = await Client.ReceiveAsync();
-                    
-                    parser.Parse(Encoding.UTF8.GetString(result.Buffer));
-                }
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-            catch (SocketException)
-            {
-            }
+                EmitString(observer);
+
+                var bytes = result.Result.Buffer;
+                var str = Encoding.UTF8.GetString(bytes);
+
+                observer.OnNext(str);
+            });
         }
     }
 }

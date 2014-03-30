@@ -4,29 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StatsN.Core;
+using System.Reactive.Linq;
 
 namespace StatsN.StatsD.Frontends
 {
     class StatsDMessageParser
     {
-        private IObserver<Metric> Events { get; set; }
 
-        public StatsDMessageParser(IObserver<Metric> events)
+        public IObservable<Metric> Parse(IObservable<string> input)
         {
-            Events = events;
+            return input.SelectMany(message =>
+                {
+                    return Parse(message);
+                });
         }
 
-        public void Parse(string message)
+        private IEnumerable<Metric> Parse(string message)
         {
-            var components = message.Split('\n');
-
-            foreach (var msg in components.Where(str => !String.IsNullOrWhiteSpace(str)))
-            {
-                DisectMessage(msg.Trim());
-            }
+            return message
+                .Split('\n')
+                .Where(str => !String.IsNullOrWhiteSpace(str))
+                .Select(DisectMessage);
         }
 
-        private void DisectMessage(string msg)
+        private Metric DisectMessage(string msg)
         {
             var comp = msg.Split(':');
             var name = comp[0];
@@ -41,29 +42,31 @@ namespace StatsN.StatsD.Frontends
                 metric /= float.Parse(comp[2].TrimStart('@'));
             }
 
-            EmitMessage(name, metric, type);
+            return EmitMessage(name, metric, type);
         }
 
-        private void EmitMessage(string name, float metric, string type)
+        private Metric EmitMessage(string name, float value, string type)
         {
-            Metric evnt;
+            Metric metric;
             switch (type)
             {
                 case "c":
-                    evnt = new Metric(name, nspace: type, count: metric);
+                    metric = new Metric(name, namespaceTag: Tags.Counter, count: value);
                     break;
                 case "s":
-                    evnt = new Metric(name, nspace: type, count: 1, entityTag: (int)metric);
+                    metric = new Metric(name, namespaceTag: Tags.Set, count: 1, entityTag: (int)value);
                     break;
                 case "ms":
+                    metric = new Metric(name, namespaceTag: Tags.Timer, value: value);
+                    break;
                 case "g":
-                    evnt = new Metric(name, nspace: type, value: metric);
+                    metric = new Metric(name, namespaceTag: Tags.Gauge, value: value);
                     break;
                 default:
                     throw new Exception(String.Format("Unknown message type {0}", type));
             }
 
-            Events.OnNext(evnt);
+            return metric;
         }
     }
 }

@@ -16,13 +16,14 @@ namespace StatsN
             System.Diagnostics.Debug.WriteLine("Loading starts");
             var frontendLoader = new Plugins.FrontendLoader().Load(config.Frontends);
             
-            var metrics = Observable.Merge<Metric>(frontendLoader.Plugins.Select(fe => fe.Events));
             var meta = Observable.Create<MetaMetric>(_ => Disposable.Empty);
 
             var backendLoader = new Plugins.BackendLoader().Load(config.Backends);
-            frontendLoader.Plugins.Subscribe(_ => Task.Factory.StartNew(_.Run));
+
+            var metrics = frontendLoader.Plugins.SelectMany(plugin => plugin.Run()).Publish();
             backendLoader.Plugins.Subscribe(_ => _.Run(metrics,  meta));
 
+            metrics.Connect();
             System.Diagnostics.Debug.WriteLine("Loading complete");
         }
     }

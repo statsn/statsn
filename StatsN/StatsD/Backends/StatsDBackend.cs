@@ -14,7 +14,7 @@ namespace StatsN.StatsD.Backends
     abstract class StatsDBackend : IBackend
     {
 
-        IObservable<IMetricGroup> PastKeys;
+        IObservable<IGroupedObservable<string, Metric>> PastKeys;
 
 
         public void Run(IObservable<Metric> metrics, IObservable<MetaMetric> meta)
@@ -39,27 +39,27 @@ namespace StatsN.StatsD.Backends
 
             PastKeys = replay
                 .Timeout(TimeSpan.Zero) // Complete the sequence on subscription
-                .Catch<IMetricGroup, TimeoutException>(_ => Observable.Empty<IMetricGroup>());
+                .Catch<IGroupedObservable<string, Metric>, TimeoutException>(_ => Observable.Empty<IGroupedObservable<string, Metric>>());
         }
 
         private void FlushWindow(IObservable<Metric> events)
         {
-            var counters = events.Where(e => e.Namespace == null || e.Namespace == "c");
-            var timers = events.Where(e => e.Namespace == null || e.Namespace == "ms");
+            var counters = events.Where(e => e.NamespaceTag == Tags.Counter);
+            var timers = events.Where(e => e.NamespaceTag == Tags.Timer);
 
             FlushCounters(GroupMetrics(counters));
             FlushTimers(GroupMetrics(timers));
         }
 
-        private IObservable<IMetricGroup> GroupMetrics(IObservable<Metric> metrics)
+        private IObservable<IGroupedObservable<string, Metric>> GroupMetrics(IObservable<Metric> metrics)
         {
             return metrics
                 .GroupBy(e => e.Name)
                 .Concat(PastKeys)
-                .Distinct(e => e.Key).Select(_ => (IMetricGroup)_);
+                .Distinct(e => e.Key).Select(_ => (IGroupedObservable<string, Metric>)_);
         }
 
-        private void FlushCounters(IObservable<IMetricGroup> events)
+        private void FlushCounters(IObservable<IGroupedObservable<string, Metric>> events)
         {
             events
                 .Subscribe(grouping =>
@@ -74,7 +74,7 @@ namespace StatsN.StatsD.Backends
                });
         }
 
-        private void FlushTimers(IObservable<IMetricGroup> events)
+        private void FlushTimers(IObservable<IGroupedObservable<string, Metric>> events)
         {
             events
                 .SelectMany(group =>

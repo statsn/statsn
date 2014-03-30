@@ -4,33 +4,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Disposables;
+
+using StatsN.Core;
 
 namespace StatsN.StatsD.Frontends
 {
-    class Console : StatsD
+    class Console : StatsDFrontend
     {
         private bool Running = true;
 
-        protected override void Listen(StatsDMessageParser parser)
+        protected override IObservable<string> Listen()
         {
-            System.Console.WriteLine("StatsD CLI");
-            while (Running)
-            {
-                try
+            var inputs = Observable.Create<string>(observer =>
                 {
-                    var line = System.Console.ReadLine();
-                    parser.Parse(line);
-                }
-                catch (IndexOutOfRangeException)
-                {
+                    var stream = System.Console.OpenStandardInput();
+                    var reader = new StreamReader(stream);
+
+                    EmitString(reader, observer);
                     
-                }
-            }
+                    return Disposable.Create(() =>
+                        {
+                            reader.Dispose();
+                            stream.Dispose();
+                        });
+                });
+
+            return inputs;
         }
 
-        public override void Terminate()
+        private void EmitString(StreamReader reader, IObserver<String> obserer)
         {
-            Running = false;
+            var read = reader.ReadLineAsync();
+            read.ContinueWith(result =>
+                {
+                    EmitString(reader, obserer);
+                    obserer.OnNext(result.Result);
+                }
+            );
         }
     }
 }
