@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Schema;
 
 using StatsN.Extentions.Xml;
 
@@ -21,9 +22,12 @@ namespace StatsN.Configuration
 
         private void LoadFromXml(Uri path)
         {
-            var doc = XDocument.Load(path.AbsolutePath);
+          
+            var configDocument = XDocument.Load(path.AbsolutePath);
 
-            var config = doc.Elements().First(_ => _.Name.LocalName == "config");
+            Validate(configDocument);
+
+            var config = configDocument.Elements().First(_ => _.Name.LocalName == "config");
 
             Frontends = config.ElementsAnyNS("frontend")
                 .Select(CreatePluginConfigFromNode)
@@ -36,6 +40,24 @@ namespace StatsN.Configuration
                 .AsReadOnly();
 
             return;
+        }
+
+        private static void Validate(XDocument doc)
+        {
+            var schemas = new XmlSchemaSet();
+            schemas.Add("http://tempuri.org/configSchema.xsd", "configSchema.xsd");
+
+            var errors = false;
+            doc.Validate(schemas, (o, e) =>
+            {
+                Console.WriteLine(e.Message);
+                errors = true;
+            });
+
+            if (errors)
+            {
+                throw new ConfigurationException();
+            }
         }
 
         private PluginConfig CreatePluginConfigFromNode(XElement node)

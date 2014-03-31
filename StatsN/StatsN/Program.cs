@@ -8,16 +8,31 @@ namespace StatsN
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
 
             Uri entryUri = new Uri(System.Reflection.Assembly.GetEntryAssembly().Location);
-            var config = new Configuration.Configuration(new Uri(entryUri, "config.xml"));
+
+
+
+            Configuration.Configuration config;
+            try
+            {
+                config = new Configuration.Configuration(new Uri(entryUri, "config.xml"));
+            }
+            catch (Configuration.ConfigurationException e)
+            {
+                Console.WriteLine(e.Message);
+                return 1; 
+            }
+
 
             var host = new Host(config);
+            host.Start();
 
             System.Diagnostics.Debug.WriteLine("Initalization complete - blocking main thread");
             Task.WaitAll(Never());
+            return 0;
         }
 
         static Task Never()
