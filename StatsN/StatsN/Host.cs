@@ -29,7 +29,7 @@ namespace StatsN
             var backendLoader = new Plugins.BackendLoader().Load(Configuration.Backends);
 
             var metrics = frontendLoader.Plugins.SelectMany(plugin => plugin.Run()).Publish();
-            backendLoader.Plugins.Subscribe(_ => _.Run(metrics, meta));
+            backendLoader.Plugins.Subscribe(backend => backend.Run(metrics, meta));
 
             metrics.Connect();
             System.Diagnostics.Debug.WriteLine("Loading complete");

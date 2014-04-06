@@ -11,11 +11,9 @@ using StatsN.StatsD.Backends.Aggregations;
 
 namespace StatsN.StatsD.Backends
 {
-    abstract class StatsDBackend : IBackend
+    abstract class AggregationBackend : IBackend
     {
-
         IObservable<IGroupedObservable<string, Metric>> PastKeys;
-
 
         public void Run(IObservable<Metric> metrics, IObservable<MetaMetric> meta)
         {
@@ -24,7 +22,7 @@ namespace StatsN.StatsD.Backends
             ConfigurePastKeyStorage(metrics);
 
             metrics
-                .Window(TimeSpan.FromSeconds(3))
+                .Window(TimeSpan.FromSeconds(10))
                 .Subscribe(FlushWindow);
         }
 
@@ -59,9 +57,9 @@ namespace StatsN.StatsD.Backends
                 .Distinct(e => e.Key).Select(_ => (IGroupedObservable<string, Metric>)_);
         }
 
-        private void FlushCounters(IObservable<IGroupedObservable<string, Metric>> events)
+        private void FlushCounters(IObservable<IGroupedObservable<string, Metric>> eventGroups)
         {
-            events
+            eventGroups
                 .Subscribe(grouping =>
                {
                    var count = grouping.Sum(e => e.Count);
@@ -74,15 +72,16 @@ namespace StatsN.StatsD.Backends
                });
         }
 
-        private void FlushTimers(IObservable<IGroupedObservable<string, Metric>> events)
+        private void FlushTimers(IObservable<IGroupedObservable<string, Metric>> eventGroups)
         {
-            events
+            eventGroups
                 .SelectMany(group =>
                     {
                         var aggregator = new Aggregations.MeasurementAggregator();
 
                         return aggregator.Aggregate(group).Select(value => new { group.Key, Metrics = value });
                     })
+
                 .Subscribe(_ =>
                 {
                     var key = _.Key;
@@ -92,6 +91,7 @@ namespace StatsN.StatsD.Backends
                 });
         }
 
+        
         protected abstract void FlushTimers(string key, MeasurementMetrics metrics);
 
         protected abstract void FlushCounters(string key, float sum);

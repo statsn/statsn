@@ -12,16 +12,18 @@ using StatsN.StatsD.Backends.Aggregations;
 namespace StatsN.StatsD.Backends
 {
    
-    class Console : StatsDBackend
+    class Console : AggregationBackend
     {
+
+      
         protected override void FlushTimers(string key, MeasurementMetrics metrics)
         {
-            System.Console.WriteLine("{0,-10} {1,-5}", key, metrics.Count);
+            System.Console.WriteLine("{0, -10} {1, -5} {2,-5:0.##} {3,-5:0.##}", key, metrics.Count, metrics.Mean, metrics.Median);
         }
 
         protected override void FlushCounters(string key, float sum)
         {
-            System.Console.WriteLine("{0,-10} {1,-5} {2:0.00}", key, sum, sum / 10.0);
+            System.Console.WriteLine("{0,-10} {1,-5:0.##} {2:0.##}", key, sum, sum / 10.0);
         }
     }
 }

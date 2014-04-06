@@ -8,8 +8,14 @@ using System.Reactive.Linq;
 
 namespace StatsN.StatsD.Frontends
 {
-    class StatsDMessageParser
+    class MessageParser
     {
+        private const string Counter = "c";
+        private const string Set = "s";
+        private const string Timer = "ms";
+        private const string Guage = "g";
+
+
 
         public IObservable<Metric> Parse(IObservable<string> input)
         {
@@ -50,16 +56,16 @@ namespace StatsN.StatsD.Frontends
             Metric metric;
             switch (type)
             {
-                case "c":
+                case Counter:
                     metric = new Metric(name, namespaceTag: Tags.Counter, count: value);
                     break;
-                case "s":
+                case Set:
                     metric = new Metric(name, namespaceTag: Tags.Set, count: 1, entityTag: (int)value);
                     break;
-                case "ms":
+                case Timer:
                     metric = new Metric(name, namespaceTag: Tags.Timer, value: value);
                     break;
-                case "g":
+                case Guage:
                     metric = new Metric(name, namespaceTag: Tags.Gauge, value: value);
                     break;
                 default:

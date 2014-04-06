@@ -60,13 +60,16 @@
     <Compile Include="Backends\Console.cs" />
     <Compile Include="Backends\Aggregations\MeasurementMetrics.cs" />
     <Compile Include="Backends\MetricGroup.cs" />
-    <Compile Include="Backends\StatsDBackend.cs" />
+    <Compile Include="Backends\Proxy.cs" />
+    <Compile Include="Backends\AggregationBackend.cs" />
+    <Compile Include="Backends\ProxyFactory.cs" />
     <Compile Include="Frontends\StatsD.cs" />
     <Compile Include="Frontends\Console.cs" />
-    <Compile Include="Frontends\StatsDMessageParser.cs" />
+    <Compile Include="Frontends\MessageParser.cs" />
     <Compile Include="Frontends\Udp.cs" />
-    <Compile Include="Frontends\StatsDUdpFactory.cs" />
+    <Compile Include="Frontends\UdpFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertySetToIPEndPointConverter.cs" />
     <Compile Include="Tags.cs" />
   </ItemGroup>
   <ItemGroup>

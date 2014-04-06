@@ -11,9 +11,9 @@ namespace FrontendTests
     [TestClass]
     public class StatsDMesageParserTests
     {
-        IList<DescreteEvent> Metrics;
+        IList<Metric> Metrics;
 
-        StatsDMessageParser Parser;
+        MessageParser Parser;
 
 
         [TestInitialize]
@@ -23,7 +23,7 @@ namespace FrontendTests
 
             var observer = MockObserverToCollection(Metrics);
 
-            Parser = new StatsDMessageParser(observer);
+            Parser = new MessageParser(observer);
         }
 
         private IObserver<T> MockObserverToCollection<T> (ICollection<T> collection){
@@ -41,9 +41,8 @@ namespace FrontendTests
             var message = "foo.bar:1|c";
             Parser.Parse(message);
 
-            Assert.AreEqual(Measures.Count, 0);
-
             Assert.AreEqual(Metrics.Count, 1);
+
             var descrete = Metrics[0];
             Assert.AreEqual(descrete.Name, "foo.bar");
             Assert.AreEqual(descrete.Namespace, "c");
@@ -56,7 +55,6 @@ namespace FrontendTests
             var message = "foo.bar:1|c|@0.1";
             Parser.Parse(message);
 
-            Assert.AreEqual(Measures.Count, 0);
 
             Assert.AreEqual(Metrics.Count, 1);
             var descrete = Metrics[0];
@@ -70,8 +68,6 @@ namespace FrontendTests
         {
             var message = "foo.bar:123|s";
             Parser.Parse(message);
-
-            Assert.AreEqual(Measures.Count, 0);
 
             Assert.AreEqual(Metrics.Count, 1);
             var descrete = Metrics[0];
@@ -88,10 +84,10 @@ namespace FrontendTests
 
             Parser.Parse(message);
 
-            Assert.AreEqual(Metrics.Count, 0);
-            Assert.AreEqual(Measures.Count, 1);
+            Assert.AreEqual(Metrics.Count, 1);
+            
 
-            var measure = Measures[0];
+            var measure = Metrics[0];
             Assert.AreEqual(measure.Name, "foo.bar");
             Assert.AreEqual(measure.Namespace, "g");
             Assert.AreEqual(measure.Value, 521, 1e-10);
@@ -104,10 +100,9 @@ namespace FrontendTests
 
             Parser.Parse(message);
 
-            Assert.AreEqual(Metrics.Count, 0);
-            Assert.AreEqual(Measures.Count, 1);
+            Assert.AreEqual(Metrics.Count, 1);
 
-            var measure = Measures[0];
+            var measure = Metrics[0];
             Assert.AreEqual(measure.Name, "foo.bar");
             Assert.AreEqual(measure.Namespace, "ms");
             Assert.AreEqual(measure.Value, 521, 1e-10);
@@ -120,8 +115,7 @@ namespace FrontendTests
 
             Parser.Parse(message);
 
-            Assert.AreEqual(Metrics.Count, 1);
-            Assert.AreEqual(Measures.Count, 2);
+            Assert.AreEqual(Metrics.Count, 3);
         }
     }
 }

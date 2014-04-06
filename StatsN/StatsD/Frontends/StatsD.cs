@@ -15,7 +15,7 @@ namespace StatsN.StatsD.Frontends
     {   
         public IObservable<Metric> Run()
         {
-            var parser = new StatsDMessageParser();
+            var parser = new MessageParser();
             return parser.Parse(Listen());
         }
 

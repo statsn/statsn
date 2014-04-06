@@ -15,8 +15,6 @@ namespace StatsN.StatsD.Frontends
 {
     class Console : StatsDFrontend
     {
-        private bool Running = true;
-
         protected override IObservable<string> Listen()
         {
             var inputs = Observable.Create<string>(observer =>

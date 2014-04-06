@@ -11,7 +11,6 @@ namespace StatsN.StatsD.Backends
 {
     class EmptyMetricGroup : IGroupedObservable<string, Metric>
     {
-
         public EmptyMetricGroup(string key)
         {
             Key = key;
